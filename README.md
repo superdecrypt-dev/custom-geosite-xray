@@ -56,6 +56,7 @@ geosite-builder/
 
 ### 2. Setup pertama kali
 ```bash
+wget -O setup.sh https://raw.githubusercontent.com/superdecrypt-dev/custom-geosite-xray/master/setup.sh
 chmod +x setup.sh
 ./setup.sh
 ```
