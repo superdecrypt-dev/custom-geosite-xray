@@ -1,4 +1,4 @@
-# custom-geosite-xrayder untuk Xray-Core
+# Custom Geosite Builder untuk Xray-Core
 
 Build otomatis `custom.dat` dari berbagai sumber blocklist populer untuk digunakan di xray-core.
 
