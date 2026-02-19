@@ -1,6 +1,7 @@
 #!/bin/bash
 # ============================================================
 #  SETUP SCRIPT — Custom Geosite Builder untuk Xray-Core
+#  - Download builder.py dari GitHub
 #  - Cek & install dependensi (Go, git, python3)
 #  - Jalankan build pertama (opsional)
 # ============================================================
@@ -9,6 +10,7 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BUILDER_SCRIPT="$SCRIPT_DIR/builder.py"
+BUILDER_URL="https://raw.githubusercontent.com/superdecrypt-dev/custom-geosite-xray/master/builder.py"
 
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -26,7 +28,20 @@ echo "════════════════════════�
 echo "   Custom Geosite Builder — Setup"
 echo "════════════════════════════════════════════════"
 
-# ── 1. Cek Python3 ──
+# ── 1. Download builder.py ──
+title "▸ Mendownload builder.py..."
+if command -v curl &>/dev/null; then
+    curl -fsSL "$BUILDER_URL" -o "$BUILDER_SCRIPT" \
+        || error "Gagal download builder.py. Cek koneksi internet."
+elif command -v wget &>/dev/null; then
+    wget -q "$BUILDER_URL" -O "$BUILDER_SCRIPT" \
+        || error "Gagal download builder.py. Cek koneksi internet."
+else
+    error "curl atau wget tidak ditemukan. Install salah satu: sudo apt install curl"
+fi
+info "builder.py berhasil didownload: $BUILDER_SCRIPT"
+
+# ── 2. Cek Python3 ──
 title "▸ Mengecek Python3..."
 if command -v python3 &>/dev/null; then
     info "Python3 ditemukan: $(python3 --version)"
@@ -34,7 +49,7 @@ else
     error "Python3 tidak ditemukan. Install dengan: sudo apt install python3"
 fi
 
-# ── 2. Cek Git ──
+# ── 3. Cek Git ──
 title "▸ Mengecek Git..."
 if command -v git &>/dev/null; then
     info "Git ditemukan: $(git --version)"
@@ -45,11 +60,11 @@ else
     info "Git berhasil diinstall."
 fi
 
-# ── 3. Cek Go ──
+# ── 4. Cek Go ──
 title "▸ Mengecek Go..."
 GO_BIN=""
 for candidate in "go" "/usr/local/go/bin/go" "/usr/bin/go" "$HOME/go/bin/go" "/snap/bin/go"; do
-    if command -v "$candidate" &>/dev/null 2>&1; then
+    if "$candidate" version &>/dev/null 2>&1; then
         GO_BIN="$candidate"
         break
     fi
@@ -92,7 +107,7 @@ else
     fi
 fi
 
-# ── 4. Buat direktori yang diperlukan ──
+# ── 5. Buat direktori yang diperlukan ──
 title "▸ Menyiapkan direktori..."
 mkdir -p "$SCRIPT_DIR/data"
 mkdir -p "$SCRIPT_DIR/output"
@@ -100,7 +115,7 @@ mkdir -p "$SCRIPT_DIR/logs"
 mkdir -p "$SCRIPT_DIR/.cache"
 info "Direktori siap."
 
-# ── 5. First Run ──
+# ── 6. First Run ──
 echo ""
 echo "════════════════════════════════════════════════"
 read -rp "  Jalankan build pertama sekarang? [y/N] " yn_build
@@ -120,20 +135,6 @@ echo "════════════════════════�
 echo "  Setup selesai!"
 echo ""
 echo "  Perintah build:"
-echo "    python3 builder.py               → Build normal"
-echo "    python3 builder.py --dry-run     → Test tanpa build"
-echo "    python3 builder.py --clear-cache → Fetch ulang semua"
-echo "    python3 builder.py --verbose     → Tampilkan domain"
-echo ""
-echo "  Setelah build, install manual:"
-echo "    sudo cp output/custom.dat /usr/local/share/xray/custom.dat"
-echo "    sudo systemctl restart xray"
-echo ""
-echo "  Gunakan di config xray:"
-echo "    \"domain\": [\"custom:adblock\"]"
-echo "════════════════════════════════════════════════"
-echo ""
-"  Perintah build:"
 echo "    python3 builder.py               → Build normal"
 echo "    python3 builder.py --dry-run     → Test tanpa build"
 echo "    python3 builder.py --clear-cache → Fetch ulang semua"
