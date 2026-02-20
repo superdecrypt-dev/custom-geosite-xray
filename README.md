@@ -107,8 +107,6 @@ Tambahkan rule berikut di bagian `routing.rules` **sebelum** rule `direct` atau 
 }
 ```
 
-Contoh config lengkap tersedia di `config-xray.json`.
-
 ---
 
 ## Tambah Sumber Blocklist Sendiri
