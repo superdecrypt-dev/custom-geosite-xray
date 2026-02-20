@@ -36,8 +36,6 @@ Build otomatis `custom.dat` dari berbagai sumber blocklist populer untuk digunak
 geosite-builder/
 ├── builder.py          → Script utama
 ├── setup.sh            → Script setup & first run
-├── config-xray.json    → Contoh config xray
-├── README.md
 ├── data/               → Domain list (dibuat otomatis saat build)
 ├── output/             → Hasil build: custom.dat
 ├── logs/               → Log setiap build
